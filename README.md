@@ -24,4 +24,21 @@ It uses **Django REST Framework** for the backend and **React + Vite + TailwindC
 ---
 
 ## 📁 Folder Structure
-
+ai-customer-agent/
+├── backend/ # Django backend
+│ ├── AIshop/ # Django project
+│ ├── users/ # Auth & profile management
+│ ├── conversations/ # Chat history
+│ ├── products/ # Product data
+│ ├── orders/ # Order tracking
+│ ├── requirements.txt
+│ └── Dockerfile
+│
+├── frontend/ # React frontend
+│ ├── src/
+│ ├── public/
+│ └── package.json
+│
+├── docker-compose.yml
+├── .env.example
+└── README.md
