@@ -81,5 +81,102 @@ docker compose up --build
 | 🖥️ Frontend (React)  | [http://localhost:5173](http://localhost:5173)      | Vite dev server for the AI customer UI        |
 | 📡 Backend API Docs  | [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/) | Swagger UI via drf-spectacular |
 
+---
 
+## 📬 API Examples
+
+### 🔐 Signup User
+
+**POST** `/api/users/signup/`
+
+Creates a new user and returns JWT tokens.
+
+**cURL Example:**
+
+```bash
+curl -X POST http://localhost:8000/api/users/signup/ \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "seif123",
+    "email": "seif@example.com",
+    "password": "seif1234"
+  }'
+```
+### Response
+```bash
+{
+  "message": "Signup successful",
+  "user": {
+    "id": 1,
+    "username": "seif123",
+    "email": "seif@example.com"
+  },
+  "tokens": {
+    "access": "eyJ0eXAiOiJKV1QiLCJh...",
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhb..."
+  }
+}
+```
+---
+
+### 🔑 Login User
+
+**POST** `/api/users/login/`
+
+Authenticates a user and returns a JWT access token.
+
+**cURL Example:**
+
+```bash
+curl -X POST http://localhost:8000/api/users/login/ \
+  -H "accept: application/json" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "seif@example.com",
+    "password": "123"
+  }'
+```
+### Response:
+```bash
+{
+  "message": "Login successful",
+  "user": {
+    "id": 1,
+    "username": "seif123",
+    "email": "seif@example.com"
+  },
+  "tokens": {
+    "access": "eyJ0eXAiOiJKV1QiLCJhbGciOi...",
+    "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOi..."
+  }
+}
+
+```
+---
+
+### 💬 Chat with AI Agent
+
+**POST** `/api/conversations/chat/`
+
+Sends a user message to the AI agent and receives an intelligent response. Requires authentication via JWT.
+
+**cURL Example:**
+
+```bash
+curl -X POST http://localhost:8000/api/conversations/chat/ \
+  -H "accept: application/json" \
+  -H "Authorization: Bearer <your_access_token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "List all orders"
+  }'
+```
+
+### Response:
+```bash
+{
+  "message": "Hello! Here are the orders associated with your user ID 2:\n\n1. Order #1: You have a pending order for Noise Cancelling Headphones x2.\n2. Order #2: You also have a pending order for an Iphone x1.\n\nBoth orders are yet to be processed. We'll keep you updated on their status. If you have any other requests or need assistance with something else, feel free to let me know!"
+}
+```
 
