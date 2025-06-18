@@ -25,7 +25,15 @@ It uses **Django REST Framework** for the backend and **React + Vite + TailwindC
 
 ---
 
+
 ## 🚀 Getting Started
+
+### 📁 Clone the Repository
+
+```bash
+git clone https://github.com/Seif2001/aiShop.git
+cd aiShop
+```
 
 ### 📦 Backend Setup
 
