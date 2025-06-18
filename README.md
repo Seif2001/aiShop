@@ -28,18 +28,15 @@ It uses **Django REST Framework** for the backend and **React + Vite + TailwindC
 
 ## 🚀 Getting Started
 
-### 📁 Clone the Repository
+### Step 1: 📁 Clone the Repository
 
 ```bash
 git clone https://github.com/Seif2001/aiShop.git
 cd aiShop
 ```
+### Step 2: Create .env
 
-### 📦 Backend Setup
-
----
-
-## 🔐 Get Your OpenRouter API Key (for Mistral or GPT Models)
+#### 🔐 Get Your OpenRouter API Key (for Mistral or GPT Models)
 
 This project uses [OpenRouter.ai](https://openrouter.ai) to connect to AI models such as **Mistral**, **Claude**, or **GPT-4** via API.
 
@@ -53,9 +50,18 @@ Follow these steps:
 
 ---
 
-## 🔑 Add It to Your `.env` File
+#### 🔑 Add It to Your `.env` File
 
 Inside your `aiShop/.env` add:
+
+
+
+### Step 3: Docker Setup
+```bash
+docker compose up --build
+```
+<!-- ---
+
 
 ```env
 OPENROUTER_API_KEY=sk-or-xxxxxxxxxxxxxxxxxxxxxxxx
@@ -72,12 +78,7 @@ python manage.py runserver
 ```bash
 cd frontend
 npm install
-npm run dev
-```
-
-### Docker Setup
-```bash
-docker compose up --build
+npm run dev -->
 ```
 
 ---
