@@ -29,6 +29,29 @@ It uses **Django REST Framework** for the backend and **React + Vite + TailwindC
 
 ### 📦 Backend Setup
 
+---
+
+## 🔐 Get Your OpenRouter API Key (for Mistral or GPT Models)
+
+This project uses [OpenRouter.ai](https://openrouter.ai) to connect to AI models such as **Mistral**, **Claude**, or **GPT-4** via API.
+
+Follow these steps:
+
+1. Go to [https://openrouter.ai](https://openrouter.ai)
+2. Sign up or log in
+3. Go to **API Keys**
+4. Click **Create new key**
+5. Copy the key (starts with `sk-or-...`)
+
+---
+
+## 🔑 Add It to Your `.env` File
+
+Inside your `backend/.env` add:
+
+```env
+OPENROUTER_API_KEY=sk-or-xxxxxxxxxxxxxxxxxxxxxxxx
+```
 ```bash
 cd backend
 python -m venv venv
@@ -48,4 +71,6 @@ npm run dev
 ```bash
 docker compose up --build
 ```
+
+
 
