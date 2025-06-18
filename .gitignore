@@ -1,0 +1,9 @@
+# Root .gitignore
+.env
+*.pyc
+__pycache__/
+node_modules/
+dist/
+*.sqlite3
+venv/
+

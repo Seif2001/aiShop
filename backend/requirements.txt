@@ -1,0 +1,11 @@
+Django>=4.2
+psycopg2-binary>=2.9
+djangorestframework
+drf-spectacular
+openai
+langchain
+langchain-openai
+langchain-community
+pydentic
+django-cors-headers
+djangorestframework-simplejwt
