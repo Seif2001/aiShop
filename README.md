@@ -72,5 +72,14 @@ npm run dev
 docker compose up --build
 ```
 
+---
+
+## 🔗 Live Demo & Documentation Links
+
+| Interface            | Link                                                | Description                                   |
+|----------------------|-----------------------------------------------------|-----------------------------------------------|
+| 🖥️ Frontend (React)  | [http://localhost:5173](http://localhost:5173)      | Vite dev server for the AI customer UI        |
+| 📡 Backend API Docs  | [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/) | Swagger UI via drf-spectacular |
+
 
 
