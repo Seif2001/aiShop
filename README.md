@@ -55,7 +55,7 @@ Follow these steps:
 
 ## 🔑 Add It to Your `.env` File
 
-Inside your `backend/.env` add:
+Inside your `aiShop/.env` add:
 
 ```env
 OPENROUTER_API_KEY=sk-or-xxxxxxxxxxxxxxxxxxxxxxxx
