@@ -2,14 +2,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Conversation
+from users.models import User
 from .serializers import ConversationSerializer
 from drf_spectacular.utils import extend_schema
-from users.models import User
 import json
 from .services import Agent
 from .functions import function_descriptions, function_inputs, function_schemas, function_inputs
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+
 
 @extend_schema(
     summary="List or create conversations",
@@ -69,6 +70,7 @@ def conversation_detail(request, pk):
 @permission_classes([IsAuthenticated])
 
 def chat(request):
+    
     print(f"[CHAT] Received request: {request.data}", flush=True)
     user_id = str(request.user.id)  # get from authenticated user
     print("[CHAT] recieved user with id: ", user_id, flush=True)

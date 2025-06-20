@@ -1,17 +1,11 @@
 
-
-
-
-
-
 # from pydantic import BaseModel
 from langchain.tools import Tool
 from orders.models import Order
 from orders.serializers import OrderSerializer
 from .functions_schemas import GetOrdersInput, UpdateProfileInput, GetOrderInput
-from users.models import User
 from users.serializers import UserSerializer
-
+from users.models import User
 
 def get_orders(user_id:str) -> str:
     orders = Order.objects.filter(user_id=user_id)

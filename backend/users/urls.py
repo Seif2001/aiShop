@@ -8,8 +8,6 @@ urlpatterns = [
     path('<int:pk>/', views.user_detail),  # GET/PUT/DELETE a single user
     path('login/', views.login),
     path('signup/', views.signup),
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
 
 ]

@@ -1,20 +1,18 @@
 from rest_framework import serializers
 from .models import User
+from rest_framework.validators import UniqueValidator
 
 
-# 🔹 For user registration (input only)
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['email', 'username', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        user = User(
-            username=validated_data['username'],
-            email=validated_data.get('email', '')
-        )
-        user.set_password(validated_data['password'])
+        password = validated_data.pop('password')
+        user = User(**validated_data)
+        user.set_password(password) 
         user.save()
         return user
 
@@ -33,10 +31,8 @@ class TokenResponseSerializer(serializers.Serializer):
     tokens = serializers.DictField()
 
 
-class UserLoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = [ 'email', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
 
 
