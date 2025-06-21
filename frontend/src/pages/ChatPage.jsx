@@ -69,7 +69,7 @@ const ChatPage = () => {
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`mb-2 p-3 rounded-lg max-w-[75%] ${
+            className={`mb-2 p-3 rounded-lg max-w-[75%] whitespace-pre-wrap ${
               msg.direction === "user"
                 ? "bg-blue-500 text-white ml-auto"
                 : "bg-gray-300 text-black"

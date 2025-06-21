@@ -3,9 +3,11 @@
 from langchain.tools import Tool
 from orders.models import Order
 from orders.serializers import OrderSerializer
-from .functions_schemas import GetOrdersInput, UpdateProfileInput, GetOrderInput
+from .functions_schemas import GetOrdersInput, UpdateProfileInput, GetOrderInput, GetProductsInput
 from users.serializers import UserSerializer
 from users.models import User
+from products.models import Product
+from products.serializers import ProductSerializer
 
 def get_orders(user_id:str) -> str:
     orders = Order.objects.filter(user_id=user_id)
@@ -37,6 +39,15 @@ def get_order(order_id: str) -> dict:
         return {"error": "Order not found."}
     
 
+def get_products()-> dict:
+    try:
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return serializer.data
+    except Product.DoesNotExist:
+        return {"error": "Products not found."}
+    
+
 
 function_descriptions = {
     "get_orders": {
@@ -47,6 +58,9 @@ function_descriptions = {
     },
     "get_order": {
         "description": "Get details of a specific order by providing order_id.",
+    },
+    "get_products":{
+        "description": "Get all products found."
     }
 }
 
@@ -61,13 +75,23 @@ function_inputs = {
     },
     "get_order": {
         "order_id": "a string representing the order ID, example: '67890'"
-    }
+    },
+    "get_products":None
+
 }
 
 function_schemas = {
     "get_orders": GetOrdersInput,
     "update_profile": UpdateProfileInput,
-    "get_order": GetOrderInput
+    "get_order": GetOrderInput,
+    "get_products":GetProductsInput
+}
+
+function_registry = {
+    "get_orders": get_orders,
+    "update_profile": update_profile,
+    "get_order": get_order,
+    "get_products":get_products
 }
 
 

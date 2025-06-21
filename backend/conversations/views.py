@@ -7,7 +7,7 @@ from .serializers import ConversationSerializer
 from drf_spectacular.utils import extend_schema
 import json
 from .services import Agent
-from .functions import function_descriptions, function_inputs, function_schemas, function_inputs
+from .functions import function_descriptions, function_inputs, function_schemas, function_registry
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
@@ -83,7 +83,7 @@ def chat(request):
     Conversation.objects.create(user_id=user_id, message=message, direction="user")
 
     # Handle chat logic
-    agent = Agent(user_id, message, function_descriptions=function_descriptions,function_schemas=function_schemas, function_inputs=function_inputs)
+    agent = Agent(user_id, message, function_descriptions=function_descriptions,function_schemas=function_schemas, function_inputs=function_inputs, function_registry=function_registry)
     response = agent.run()
 
     

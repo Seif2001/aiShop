@@ -11,3 +11,6 @@ class UpdateProfileInput(BaseModel):
 
 class GetOrderInput(BaseModel):
     order_id: str
+
+class GetProductsInput(BaseModel):
+    pass

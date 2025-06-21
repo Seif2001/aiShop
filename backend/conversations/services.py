@@ -1,5 +1,5 @@
 import json
-from typing import Dict
+from typing import Dict, Callable, Any
 from pydantic import BaseModel
 from .chat_agent import llm
 from .functions import get_order, get_orders, update_profile
@@ -14,13 +14,15 @@ class Agent:
             message: str,
             function_descriptions: Dict[str, str],
             function_schemas: Dict[str, BaseModel],
-            function_inputs: Dict[str, Dict[str, str]]
+            function_inputs: Dict[str, Dict[str, str]],
+            function_registry: Dict[str, Callable[..., Any]]
     ):
         self.user_id = user_id
         self.message = message
         self.function_descriptions = function_descriptions
         self.function_schemas = function_schemas
         self.function_inputs = function_inputs
+        self.function_registry = function_registry
         self.full_prompt = f"{message}"
         self.user_id = user_id
         self.function_name = ""
@@ -154,20 +156,25 @@ class Agent:
     def get_function_inputs(self, prompt: str, function_name: str) -> dict:
         input_schema = json.dumps(self.function_inputs[function_name], indent=2)
         system_instruction = (
-        "You are an AI assistant that extracts structured input data from user messages. "
-        "Use the schema provided and return a valid JSON dictionary only. Do not explain. Do not mix up user_id with any other x_id, it is normal that the user does not enter the complete or correct input"
+            "You are an AI assistant that extracts structured input data from user messages. "
+            "Use the schema provided and return a valid JSON dictionary only. Do not explain. "
+            "Do not mix up user_id with any other *_id. It is normal that the user may not provide complete or correct input."
         )
         input_prompt = (
             f"{system_instruction}\n\n"
             f"The user_id {self.user_id} said: \"{prompt}\"\n\n"
             f"The function to call is: {function_name}\n"
             f"The function expects the following inputs:\n{input_schema}\n\n"
+            f"⚠️ If the function input schema is empty (i.e. the function does not require any inputs), then output ONLY this: {{}} — nothing else.\n"
+            f"⚠️ DO NOT include any keys like 'user_id', 'args', 'input', 'input_args', or any others.\n"
+            f"✅ If the function does require inputs, output them in a valid flat JSON object format (no explanation, no comments).\n\n"
             f"Now generate the input arguments in JSON format."
         )
+
         print("[DEBUG] Generating function inputs with prompt:", input_prompt)
         try:
             response = llm.invoke(input_prompt)
-
+            print("[DEBUG] got inputs: ", response.content)
             
             return response.content.strip()  # Assuming the response is a JSON string
         except Exception as e:
@@ -196,17 +203,18 @@ class Agent:
 
     def execute_function(self, function_name: str, inputs: dict) -> dict:
         """
-        Execute the function with the provided inputs.
+        Execute a registered function using unpacked keyword arguments.
         """
         print(f"[DEBUG] Executing function '{function_name}' with inputs: {inputs}")
-        if function_name == "get_orders":
-            return get_orders(inputs["user_id"])
-        elif function_name == "update_profile":
-            return update_profile(inputs["user_id"], inputs["data"])
-        elif function_name == "get_order":
-            return get_order(inputs["order_id"])
-        else:
-            return {"error": "Function not found."}
+        
+        func = self.function_registry.get(function_name)
+        if not func:
+            return {"error": f"Function '{function_name}' not found."}
+
+        try:
+            return func(**inputs)
+        except TypeError as e:
+            return {"error": f"Invalid arguments for function '{function_name}': {str(e)}"}
         
 
     def final_ai_output(self, function_name: str, inputs: dict, initial_prompt: str, function_result: dict, error: str) -> str:
