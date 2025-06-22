@@ -3,7 +3,7 @@
 from langchain.tools import Tool
 from orders.models import Order
 from orders.serializers import OrderSerializer
-from .functions_schemas import GetOrdersInput, UpdateProfileInput, GetOrderInput, GetProductsInput
+from .functions_schemas import GetOrdersInput, UpdateProfileInput, GetOrderInput, GetProductsInput, MakeOrderInput
 from users.serializers import UserSerializer
 from users.models import User
 from products.models import Product
@@ -48,6 +48,23 @@ def get_products()-> dict:
         return {"error": "Products not found."}
     
 
+def make_order(user_id: str, product_id: str, quantity:str)->dict:
+    order_data = {
+        "user": user_id,
+        "product": product_id,
+        "quantity": quantity
+    }
+    quantity = int(quantity)
+
+    serializer = OrderSerializer(data=order_data)
+
+    if serializer.is_valid():
+        serializer.save()
+        return {"success": "Order created successfully.", "order": serializer.data}
+    else:
+        return {"error": serializer.errors}
+    
+
 
 function_descriptions = {
     "get_orders": {
@@ -61,7 +78,11 @@ function_descriptions = {
     },
     "get_products":{
         "description": "Get all products found."
+    },
+    "make_order":{
+        "description": "User makes an order to a specific product with a specific quantity"
     }
+
 }
 
 
@@ -76,7 +97,12 @@ function_inputs = {
     "get_order": {
         "order_id": "a string representing the order ID, example: '67890'"
     },
-    "get_products":None
+    "get_products":None,
+    "make_order":{
+        "user_id": "a string representing the user ID, example: '12345'",
+        "product_id":"a string representing the product ID, example: '12345'",
+        "quantitiy":"a string representing the amount of items the user wants from a specific product"
+    }
 
 }
 
@@ -84,14 +110,16 @@ function_schemas = {
     "get_orders": GetOrdersInput,
     "update_profile": UpdateProfileInput,
     "get_order": GetOrderInput,
-    "get_products":GetProductsInput
+    "get_products":GetProductsInput,
+    "make_order":MakeOrderInput
 }
 
 function_registry = {
     "get_orders": get_orders,
     "update_profile": update_profile,
     "get_order": get_order,
-    "get_products":get_products
+    "get_products":get_products,
+    "make_order":make_order
 }
 
 

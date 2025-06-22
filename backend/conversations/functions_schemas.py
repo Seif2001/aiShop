@@ -14,3 +14,8 @@ class GetOrderInput(BaseModel):
 
 class GetProductsInput(BaseModel):
     pass
+
+class MakeOrderInput(BaseModel):
+    user_id: str
+    product_id: str
+    quantity: str

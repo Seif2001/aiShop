@@ -15,7 +15,7 @@ class Agent:
             function_descriptions: Dict[str, str],
             function_schemas: Dict[str, BaseModel],
             function_inputs: Dict[str, Dict[str, str]],
-            function_registry: Dict[str, Callable[..., Any]]
+            function_registry: Dict[str, Callable[..., Any]],
     ):
         self.user_id = user_id
         self.message = message
@@ -30,12 +30,14 @@ class Agent:
         self.initial_prompt = ""
         self.function_result = {}
         self.error = ""
+    
 
     def run(self) -> dict:
         """
         Run the agent to process the message and return the response data.
         """
         self._log("Received request", self.full_prompt)
+
         if not self._detect_intent():
             return self._response()
 
